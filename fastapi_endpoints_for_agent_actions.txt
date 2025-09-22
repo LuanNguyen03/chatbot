@@ -1,0 +1,1140 @@
+# FastAPI Endpoint Documentation for Importing agent_actions
+
+Below is a summary of all main API endpoints in the project, formatted for easy import into the `agent_actions` table. Each entry includes:
+- URL path
+- HTTP method
+- Short description
+- Required parameters (name, type, required/optional)
+- Auth type (JWT, none, etc.)
+- Timeout & retry (default: 30s, 3 retries if not specified)
+
+---
+
+## Example Format
+
+- **URL:** /api/transfer
+- **Method:** POST
+- **Description:** Chuyển khoản giữa các tài khoản
+- **Params:**
+    - from_account: str (required)
+    - to_account: str (required)
+    - amount: float (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+---
+
+# Actual Endpoints
+
+## Accounts
+- **URL:** /accounts/api
+- **Method:** GET
+- **Description:** Lấy danh sách tài khoản
+- **Params:** skip: int (optional), limit: int (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /accounts/api/{item_id}
+- **Method:** GET
+- **Description:** Lấy thông tin chi tiết tài khoản
+- **Params:** item_id: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /accounts/api
+- **Method:** POST
+- **Description:** Tạo mới tài khoản
+- **Params:**
+    - account_number: str (required)
+    - customer_id: uuid (required)
+    - account_type: str (required)
+    - currency: str (optional)
+    - balance: float (optional)
+    - is_active: bool (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /accounts/api/{item_id}
+- **Method:** PUT
+- **Description:** Cập nhật tài khoản
+- **Params:**
+    - item_id: str (required)
+    - account_number: str (required)
+    - customer_id: uuid (required)
+    - ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /accounts/api/{item_id}
+- **Method:** DELETE
+- **Description:** Xóa tài khoản
+- **Params:** item_id: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+## Transactions
+- **URL:** /transactions/api
+- **Method:** GET
+- **Description:** Lấy danh sách giao dịch
+- **Params:** skip: int (optional), limit: int (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /transactions/api/{item_id}
+- **Method:** GET
+- **Description:** Lấy chi tiết giao dịch
+- **Params:** item_id: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /transactions/api
+- **Method:** POST
+- **Description:** Tạo giao dịch mới
+- **Params:**
+    - sender_account: uuid (required)
+    - receiver_account: str (required)
+    - receiver_bank: str (required)
+    - amount: float (required)
+    - fee: float (optional)
+    - currency: str (required)
+    - status: str (required)
+    - reference_code: str (required)
+    - channel: str (required)
+    - note: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /transactions/api/{item_id}
+- **Method:** PUT
+- **Description:** Cập nhật giao dịch
+- **Params:** item_id: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /transactions/api/{item_id}
+- **Method:** DELETE
+- **Description:** Xóa giao dịch
+- **Params:** item_id: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+## Products
+- **URL:** /products/api
+- **Method:** GET
+- **Description:** Lấy danh sách sản phẩm
+- **Params:** skip: int (optional), limit: int (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /products/api/{item_id}
+- **Method:** GET
+- **Description:** Lấy chi tiết sản phẩm
+- **Params:** item_id: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /products/api
+- **Method:** POST
+- **Description:** Tạo sản phẩm mới
+- **Params:**
+    - type: str (required)
+    - name: str (required)
+    - description: str (optional)
+    - interest_rate: float (optional)
+    - min_amount: float (optional)
+    - term: int (optional)
+    - conditions: dict (optional)
+    - early_withdrawal_penalty: float (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /products/api/{item_id}
+- **Method:** PUT
+- **Description:** Cập nhật sản phẩm
+- **Params:** item_id: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /products/api/{item_id}
+- **Method:** DELETE
+- **Description:** Xóa sản phẩm
+- **Params:** item_id: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+## Subscriptions
+- **URL:** /subscriptions/api
+- **Method:** GET
+- **Description:** Lấy danh sách đăng ký sản phẩm
+- **Params:** skip: int (optional), limit: int (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /subscriptions/api/{item_id}
+- **Method:** GET
+- **Description:** Lấy chi tiết đăng ký sản phẩm
+- **Params:** item_id: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /subscriptions/api
+- **Method:** POST
+- **Description:** Tạo đăng ký sản phẩm mới
+- **Params:**
+    - customer_id: uuid (required)
+    - product_id: uuid (required)
+    - amount: float (required)
+    - start_date: date (required)
+    - end_date: date (optional)
+    - auto_renew: bool (optional)
+    - is_active: bool (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /subscriptions/api/{item_id}
+- **Method:** PUT
+- **Description:** Cập nhật đăng ký sản phẩm
+- **Params:** item_id: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /subscriptions/api/{item_id}
+- **Method:** DELETE
+- **Description:** Xóa đăng ký sản phẩm
+- **Params:** item_id: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+## Reminders
+- **URL:** /reminders/api
+- **Method:** GET
+- **Description:** Lấy danh sách nhắc nhở
+- **Params:** skip: int (optional), limit: int (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /reminders/api/{item_id}
+- **Method:** GET
+- **Description:** Lấy chi tiết nhắc nhở
+- **Params:** item_id: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /reminders/api
+- **Method:** POST
+- **Description:** Tạo nhắc nhở mới
+- **Params:**
+    - customer_id: uuid (required)
+    - type: str (required)
+    - service_name: str (required)
+    - amount: float (optional)
+    - due_date: date (required)
+    - recurrence: str (optional)
+    - last_triggered: datetime (optional)
+    - is_done: bool (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /reminders/api/{item_id}
+- **Method:** PUT
+- **Description:** Cập nhật nhắc nhở
+- **Params:** item_id: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /reminders/api/{item_id}
+- **Method:** DELETE
+- **Description:** Xóa nhắc nhở
+- **Params:** item_id: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+## Customers
+- **URL:** /customers/api
+- **Method:** GET
+- **Description:** Lấy danh sách khách hàng
+- **Params:** skip: int (optional), limit: int (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /customers/api/{item_id}
+- **Method:** GET
+- **Description:** Lấy chi tiết khách hàng
+- **Params:** item_id: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /customers/api
+- **Method:** POST
+- **Description:** Tạo khách hàng mới
+- **Params:**
+    - name: str (required)
+    - dob: date (optional)
+    - phone: str (optional)
+    - email: str (optional)
+    - national_id: str (optional)
+    - address: str (optional)
+    - kyc_status: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /customers/api/{item_id}
+- **Method:** PUT
+- **Description:** Cập nhật khách hàng
+- **Params:** item_id: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /customers/api/{item_id}
+- **Method:** DELETE
+- **Description:** Xóa khách hàng
+- **Params:** item_id: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+## Users
+- **URL:** /users/
+- **Method:** GET
+- **Description:** Lấy danh sách user
+- **Params:** None
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /users/{user_id}
+- **Method:** GET
+- **Description:** Lấy thông tin user
+- **Params:** user_id: int (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /users/
+- **Method:** POST
+- **Description:** Tạo user mới
+- **Params:**
+    - username: str (required)
+    - password: str (required)
+    - role: str (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /users/{user_id}
+- **Method:** PUT
+- **Description:** Cập nhật user
+- **Params:** user_id: int (required), username: str, password: str, role: str
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /users/{user_id}
+- **Method:** DELETE
+- **Description:** Xóa user
+- **Params:** user_id: int (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+## Sessions
+- **URL:** /sessions/api
+- **Method:** GET
+- **Description:** Lấy danh sách phiên làm việc
+- **Params:** skip: int (optional), limit: int (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /sessions/api/{item_id}
+- **Method:** GET
+- **Description:** Lấy chi tiết phiên làm việc
+- **Params:** item_id: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /sessions/api
+- **Method:** POST
+- **Description:** Tạo phiên làm việc mới
+- **Params:**
+    - customer_id: uuid (required)
+    - started_at: datetime (optional)
+    - ended_at: datetime (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /sessions/api/{item_id}
+- **Method:** PUT
+- **Description:** Cập nhật phiên làm việc
+- **Params:** item_id: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /sessions/api/{item_id}
+- **Method:** DELETE
+- **Description:** Xóa phiên làm việc
+- **Params:** item_id: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+## Agent Actions
+- **URL:** /agent_actions/api
+- **Method:** GET
+- **Description:** Lấy danh sách hành động agent
+- **Params:** skip: int (optional), limit: int (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /agent_actions/api/{item_id}
+- **Method:** GET
+- **Description:** Lấy chi tiết hành động agent
+- **Params:** item_id: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /agent_actions/api
+- **Method:** POST
+- **Description:** Tạo hành động agent mới
+- **Params:**
+    - name: str (required)
+    - description: str (optional)
+    - api_endpoint: str (required)
+    - required_params: dict (optional)
+    - auth_type: str (required)
+    - enabled: bool (optional)
+    - timeout_sec: int (optional)
+    - retry_policy: dict (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /agent_actions/api/{item_id}
+- **Method:** PUT
+- **Description:** Cập nhật hành động agent
+- **Params:** item_id: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /agent_actions/api/{item_id}
+- **Method:** DELETE
+- **Description:** Xóa hành động agent
+- **Params:** item_id: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+## Audit Logs
+- **URL:** /audit_logs/api
+- **Method:** GET
+- **Description:** Lấy danh sách log kiểm toán
+- **Params:** skip: int (optional), limit: int (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /audit_logs/api/{item_id}
+- **Method:** GET
+- **Description:** Lấy chi tiết log kiểm toán
+- **Params:** item_id: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /audit_logs/api
+- **Method:** POST
+- **Description:** Tạo log kiểm toán mới
+- **Params:**
+    - user_id: int (optional)
+    - session_id: uuid (optional)
+    - role: str (required)
+    - action_id: int (required)
+    - intent: str (optional)
+    - params: dict (optional)
+    - status: str (required)
+    - response: dict (optional)
+    - error_message: str (optional)
+    - ip_address: str (optional)
+    - duration_ms: int (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /audit_logs/api/{item_id}
+- **Method:** PUT
+- **Description:** Cập nhật log kiểm toán
+- **Params:** item_id: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /audit_logs/api/{item_id}
+- **Method:** DELETE
+- **Description:** Xóa log kiểm toán
+- **Params:** item_id: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+## Insurance
+- **URL:** /insurance/products
+- **Method:** GET
+- **Description:** Lấy danh sách sản phẩm bảo hiểm
+- **Params:** skip: int (optional), limit: int (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance/products/{ins_id}
+- **Method:** GET
+- **Description:** Lấy chi tiết sản phẩm bảo hiểm
+- **Params:** ins_id: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance/products
+- **Method:** POST
+- **Description:** Tạo sản phẩm bảo hiểm mới
+- **Params:**
+    - name: str (required)
+    - category: str (required)
+    - conditions: dict (optional)
+    - benefits: dict (optional)
+    - premium: float (optional)
+    - max_coverage: float (optional)
+    - provider: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance/products/{ins_id}
+- **Method:** PUT
+- **Description:** Cập nhật sản phẩm bảo hiểm
+- **Params:** ins_id: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance/products/{ins_id}
+- **Method:** DELETE
+- **Description:** Xóa sản phẩm bảo hiểm
+- **Params:** ins_id: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance/contracts
+- **Method:** GET
+- **Description:** Lấy danh sách hợp đồng bảo hiểm
+- **Params:** skip: int (optional), limit: int (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance/contracts/{contract_id}
+- **Method:** GET
+- **Description:** Lấy chi tiết hợp đồng bảo hiểm
+- **Params:** contract_id: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance/contracts
+- **Method:** POST
+- **Description:** Tạo hợp đồng bảo hiểm mới
+- **Params:**
+    - customer_id: uuid (required)
+    - ins_id: uuid (required)
+    - policy_number: str (required)
+    - start_date: date (required)
+    - end_date: date (optional)
+    - payment_frequency: str (required)
+    - is_active: bool (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance/contracts/{contract_id}
+- **Method:** PUT
+- **Description:** Cập nhật hợp đồng bảo hiểm
+- **Params:** contract_id: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance/contracts/{contract_id}
+- **Method:** DELETE
+- **Description:** Xóa hợp đồng bảo hiểm
+- **Params:** contract_id: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+## Chat History
+- **URL:** /chat_history/api
+- **Method:** GET
+- **Description:** Lấy lịch sử chat
+- **Params:** skip: int (optional), limit: int (optional)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /chat_history/api/{item_id}
+- **Method:** GET
+- **Description:** Lấy chi tiết tin nhắn
+- **Params:** item_id: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /chat_history/api
+- **Method:** POST
+- **Description:** Tạo tin nhắn mới
+- **Params:**
+    - session_id: uuid (required)
+    - sender: str (required)
+    - message: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /chat_history/api/{item_id}
+- **Method:** PUT
+- **Description:** Cập nhật tin nhắn
+- **Params:** item_id: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /chat_history/api/{item_id}
+- **Method:** DELETE
+- **Description:** Xóa tin nhắn
+- **Params:** item_id: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+## Lookup Routers
+
+### Account Types
+- **URL:** /account_types
+- **Method:** GET
+- **Description:** Lấy danh sách loại tài khoản
+- **Params:** None
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /account_types/{code}
+- **Method:** GET
+- **Description:** Lấy chi tiết loại tài khoản
+- **Params:** code: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /account_types
+- **Method:** POST
+- **Description:** Tạo loại tài khoản mới
+- **Params:**
+    - code: str (required)
+    - name: str (required)
+    - description: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /account_types/{code}
+- **Method:** PUT
+- **Description:** Cập nhật loại tài khoản
+- **Params:** code: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /account_types/{code}
+- **Method:** DELETE
+- **Description:** Xóa loại tài khoản
+- **Params:** code: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+### Transaction Status
+- **URL:** /transaction_status
+- **Method:** GET
+- **Description:** Lấy danh sách trạng thái giao dịch
+- **Params:** None
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /transaction_status/{code}
+- **Method:** GET
+- **Description:** Lấy chi tiết trạng thái giao dịch
+- **Params:** code: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /transaction_status
+- **Method:** POST
+- **Description:** Tạo trạng thái giao dịch mới
+- **Params:**
+    - code: str (required)
+    - name: str (required)
+    - description: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /transaction_status/{code}
+- **Method:** PUT
+- **Description:** Cập nhật trạng thái giao dịch
+- **Params:** code: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /transaction_status/{code}
+- **Method:** DELETE
+- **Description:** Xóa trạng thái giao dịch
+- **Params:** code: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+### Transaction Channels
+- **URL:** /transaction_channels
+- **Method:** GET
+- **Description:** Lấy danh sách kênh giao dịch
+- **Params:** None
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /transaction_channels/{code}
+- **Method:** GET
+- **Description:** Lấy chi tiết kênh giao dịch
+- **Params:** code: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /transaction_channels
+- **Method:** POST
+- **Description:** Tạo kênh giao dịch mới
+- **Params:**
+    - code: str (required)
+    - name: str (required)
+    - description: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /transaction_channels/{code}
+- **Method:** PUT
+- **Description:** Cập nhật kênh giao dịch
+- **Params:** code: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /transaction_channels/{code}
+- **Method:** DELETE
+- **Description:** Xóa kênh giao dịch
+- **Params:** code: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+### Product Types
+- **URL:** /product_types
+- **Method:** GET
+- **Description:** Lấy danh sách loại sản phẩm
+- **Params:** None
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /product_types/{code}
+- **Method:** GET
+- **Description:** Lấy chi tiết loại sản phẩm
+- **Params:** code: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /product_types
+- **Method:** POST
+- **Description:** Tạo loại sản phẩm mới
+- **Params:**
+    - code: str (required)
+    - name: str (required)
+    - description: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /product_types/{code}
+- **Method:** PUT
+- **Description:** Cập nhật loại sản phẩm
+- **Params:** code: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /product_types/{code}
+- **Method:** DELETE
+- **Description:** Xóa loại sản phẩm
+- **Params:** code: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+### Insurance Categories
+- **URL:** /insurance_categories
+- **Method:** GET
+- **Description:** Lấy danh sách loại bảo hiểm
+- **Params:** None
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance_categories/{code}
+- **Method:** GET
+- **Description:** Lấy chi tiết loại bảo hiểm
+- **Params:** code: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance_categories
+- **Method:** POST
+- **Description:** Tạo loại bảo hiểm mới
+- **Params:**
+    - code: str (required)
+    - name: str (required)
+    - description: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance_categories/{code}
+- **Method:** PUT
+- **Description:** Cập nhật loại bảo hiểm
+- **Params:** code: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /insurance_categories/{code}
+- **Method:** DELETE
+- **Description:** Xóa loại bảo hiểm
+- **Params:** code: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+### Payment Frequencies
+- **URL:** /payment_frequencies
+- **Method:** GET
+- **Description:** Lấy danh sách tần suất thanh toán
+- **Params:** None
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /payment_frequencies/{code}
+- **Method:** GET
+- **Description:** Lấy chi tiết tần suất thanh toán
+- **Params:** code: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /payment_frequencies
+- **Method:** POST
+- **Description:** Tạo tần suất thanh toán mới
+- **Params:**
+    - code: str (required)
+    - name: str (required)
+    - description: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /payment_frequencies/{code}
+- **Method:** PUT
+- **Description:** Cập nhật tần suất thanh toán
+- **Params:** code: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /payment_frequencies/{code}
+- **Method:** DELETE
+- **Description:** Xóa tần suất thanh toán
+- **Params:** code: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+### Reminder Types
+- **URL:** /reminder_types
+- **Method:** GET
+- **Description:** Lấy danh sách loại nhắc nhở
+- **Params:** None
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /reminder_types/{code}
+- **Method:** GET
+- **Description:** Lấy chi tiết loại nhắc nhở
+- **Params:** code: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /reminder_types
+- **Method:** POST
+- **Description:** Tạo loại nhắc nhở mới
+- **Params:**
+    - code: str (required)
+    - name: str (required)
+    - description: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /reminder_types/{code}
+- **Method:** PUT
+- **Description:** Cập nhật loại nhắc nhở
+- **Params:** code: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /reminder_types/{code}
+- **Method:** DELETE
+- **Description:** Xóa loại nhắc nhở
+- **Params:** code: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+### Reminder Recurrences
+- **URL:** /reminder_recurrences
+- **Method:** GET
+- **Description:** Lấy danh sách chu kỳ nhắc nhở
+- **Params:** None
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /reminder_recurrences/{code}
+- **Method:** GET
+- **Description:** Lấy chi tiết chu kỳ nhắc nhở
+- **Params:** code: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /reminder_recurrences
+- **Method:** POST
+- **Description:** Tạo chu kỳ nhắc nhở mới
+- **Params:**
+    - code: str (required)
+    - name: str (required)
+    - description: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /reminder_recurrences/{code}
+- **Method:** PUT
+- **Description:** Cập nhật chu kỳ nhắc nhở
+- **Params:** code: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /reminder_recurrences/{code}
+- **Method:** DELETE
+- **Description:** Xóa chu kỳ nhắc nhở
+- **Params:** code: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+### Auth Types
+- **URL:** /auth_types
+- **Method:** GET
+- **Description:** Lấy danh sách loại xác thực
+- **Params:** None
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /auth_types/{code}
+- **Method:** GET
+- **Description:** Lấy chi tiết loại xác thực
+- **Params:** code: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /auth_types
+- **Method:** POST
+- **Description:** Tạo loại xác thực mới
+- **Params:**
+    - code: str (required)
+    - name: str (required)
+    - description: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /auth_types/{code}
+- **Method:** PUT
+- **Description:** Cập nhật loại xác thực
+- **Params:** code: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /auth_types/{code}
+- **Method:** DELETE
+- **Description:** Xóa loại xác thực
+- **Params:** code: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+### Roles
+- **URL:** /roles
+- **Method:** GET
+- **Description:** Lấy danh sách vai trò
+- **Params:** None
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /roles/{code}
+- **Method:** GET
+- **Description:** Lấy chi tiết vai trò
+- **Params:** code: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /roles
+- **Method:** POST
+- **Description:** Tạo vai trò mới
+- **Params:**
+    - code: str (required)
+    - name: str (required)
+    - description: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /roles/{code}
+- **Method:** PUT
+- **Description:** Cập nhật vai trò
+- **Params:** code: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /roles/{code}
+- **Method:** DELETE
+- **Description:** Xóa vai trò
+- **Params:** code: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+### Log Status
+- **URL:** /log_status
+- **Method:** GET
+- **Description:** Lấy danh sách trạng thái log
+- **Params:** None
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /log_status/{code}
+- **Method:** GET
+- **Description:** Lấy chi tiết trạng thái log
+- **Params:** code: str (required)
+- **Auth:** JWT
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /log_status
+- **Method:** POST
+- **Description:** Tạo trạng thái log mới
+- **Params:**
+    - code: str (required)
+    - name: str (required)
+    - description: str (optional)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /log_status/{code}
+- **Method:** PUT
+- **Description:** Cập nhật trạng thái log
+- **Params:** code: str (required), ...
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+- **URL:** /log_status/{code}
+- **Method:** DELETE
+- **Description:** Xóa trạng thái log
+- **Params:** code: str (required)
+- **Auth:** JWT (admin/operator)
+- **Timeout:** 30s
+- **Retry:** 3
+
+---
