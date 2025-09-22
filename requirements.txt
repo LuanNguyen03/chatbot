@@ -1,0 +1,11 @@
+psycopg2-binary
+sqlalchemy
+python-dotenv
+docling
+tiktoken
+requests
+google-generativeai
+pandas
+fastapi
+uvicorn
+python-multipart
