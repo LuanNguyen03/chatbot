@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  # PostgreSQL Database with pgvector extension
+  postgres:
+    image: pgvector/pgvector:pg15
+    container_name: hdbank_postgres
+    environment:
+      POSTGRES_DB: hdbank_chatbot
+      POSTGRES_USER: hdbank_user
+      POSTGRES_PASSWORD: hdbank_password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hdbank_user -d hdbank_chatbot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # HDBank Chatbot Application
+  hdbank-chatbot:
+    build: .
+    container_name: hdbank_chatbot_app
+    environment:
+      POSTGRES_URI: postgresql://hdbank_user:hdbank_password@postgres:5432/hdbank_chatbot
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      PYTHONPATH: /app
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/config"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # Nginx Reverse Proxy (Optional)
+  nginx:
+    image: nginx:alpine
+    container_name: hdbank_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - hdbank-chatbot
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  default:
+    name: hdbank_network
