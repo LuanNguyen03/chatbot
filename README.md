@@ -1,126 +1,290 @@
-# HDBank Chatbot 🏦🤖
+# Banking AI Project Deployment Guide
 
-Hệ thống chatbot AI thông minh cho HDBank với khả năng xử lý tài liệu và trả lời các câu hỏi về dịch vụ ngân hàng.
+This guide will help you set up and deploy the Banking AI project after cloning from GitHub.
 
-## ✨ Tính năng chính
+## 1. Clone the Repository
 
-- 🤖 **AI Chatbot**: Sử dụng Google Gemini 1.5 Flash để trả lời câu hỏi về HDBank
-- 📄 **Document Processing**: Import và xử lý PDF, Word, text files với Docling
-- 🔍 **Vector Search**: Tìm kiếm thông tin trong documents bằng PostgreSQL + pgvector
-- ⚙️ **Admin Panel**: Giao diện quản lý để upload và quản lý policies
-- 🎨 **Modern UI**: Giao diện chat hiện đại, responsive với React-like experience
+```
+git clone <your-repo-url>
+cd banking_AI
+```
 
-## 🚀 Cài đặt và chạy
+## 2. Set Up Python Environment
 
-### 1. Cài đặt dependencies
+- Recommended: Python 3.9+
+- Create and activate a virtual environment:
 
-```bash
+```
+python -m venv venv
+venv\Scripts\activate  # On Windows
+# or
+source venv/bin/activate  # On Linux/Mac
+```
+
+## 3. Install Dependencies
+
+```
 pip install -r requirements.txt
 ```
 
-### 2. Cấu hình môi trường
+## 4. Database Setup
 
-Tạo file `.env`:
-
-```env
-POSTGRES_URI=postgresql://username:password@localhost:5432/hdbank_chatbot
-GEMINI_API_KEY=your_gemini_api_key_here
-```
-
-### 3. Setup database
-
-```bash
-python setup_database.py
-```
-
-### 4. Chạy server
-
-```bash
-python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 9000
-```
-
-## 📁 Cấu trúc project
+- Configure your database connection in `app/config.py` if needed.
+- Initialize the database (using Alembic for migrations):
 
 ```
-hdbank_chatbot/
-├── backend/
-│   ├── main.py              # FastAPI server
-│   ├── ingest_service.py    # Document processing
-│   └── config.json          # Bot configuration
-├── frontend/
-│   ├── index.html           # Main chat interface
-│   ├── admin.html           # Admin panel
-│   ├── app.js               # Chat functionality
-│   ├── styles.css           # Modern styling
-│   └── assets/              # Icons and images
-├── utils/
-│   └── tokenizer.py         # Text tokenization
-├── orchestrator.py          # Main AI logic
-├── setup_database.py       # Database initialization
-├── requirements.txt         # Python dependencies
-└── sample_policy.txt        # Sample data
+alembic upgrade head
 ```
 
-## 🖥️ Sử dụng
+## 5. Run the Application
 
-### Chatbot Interface
+```
+uvicorn app.main:app --reload
+```
 
-- Truy cập: `http://localhost:9000`
-- Chat với AI về các dịch vụ HDBank
-- Nhận câu trả lời có cấu trúc với emoji và formatting
-- Followup questions tự động
+- The app will be available at: http://127.0.0.1:8000
 
-### Admin Panel
+## 6. Access the Web UI
 
-- Truy cập: `http://localhost:9000/admin.html`
-- Upload file PDF/Word/Text
-- Import documents từ URL
-- Quản lý policies đã import
-- Xem và xóa documents
+- Open your browser and go to: http://127.0.0.1:8000
+- Login or register to use the system.
 
-## 🔧 Công nghệ sử dụng
+## 7. API Documentation
 
-- **Backend**: FastAPI, PostgreSQL, pgvector
-- **AI**: Google Gemini 1.5 Flash, Text Embeddings
-- **Document Processing**: Docling, Hybrid Chunking
-- **Frontend**: Vanilla HTML/CSS/JS với modern design
-- **Database**: PostgreSQL với vector similarity search
+- Swagger UI: http://127.0.0.1:8000/docs
+- Redoc: http://127.0.0.1:8000/redoc
 
-## 📡 API Endpoints
+## 8. Running Tests
 
-- `POST /chat` - Chat với AI
-- `POST /ingest/upload` - Upload file
-- `POST /ingest/url` - Import từ URL
-- `GET /admin/policies` - Danh sách policies
-- `DELETE /admin/policies/{id}` - Xóa policy
+- (If tests are available)
 
-## 🎯 Tính năng AI
+```
+pytest
+```
 
-- **Structured Responses**: Trả lời có cấu trúc với emoji headers
-- **Context Awareness**: Hiểu ngữ cảnh câu hỏi về ngân hàng
-- **Document Search**: Tìm kiếm trong policies đã import
-- **Followup Suggestions**: Gợi ý câu hỏi tiếp theo
-- **Error Handling**: Xử lý lỗi và fallback gracefully
+## 9. Notes
 
-## 🔒 Bảo mật
+- Make sure your database server is running and accessible.
+- For production, configure environment variables and use a production-ready server (e.g., Gunicorn, Uvicorn with workers).
+- Update `alembic.ini` and `app/config.py` for your environment as needed.
 
-- CORS configuration cho frontend
-- Input validation
-- SQL injection protection
-- Environment variables cho sensitive data
+## 10. Advanced Deployment & Customization
 
-## 📄 License
+### a. Environment Variables & Configuration
 
-MIT License - See LICENSE file for details.
+- Use environment variables for sensitive data (DB connection, secret keys, etc.).
+- Example (Windows):
+  ```cmd
+  set DATABASE_URL=postgresql://user:password@localhost:5432/banking_ai
+  set SECRET_KEY=your_secret_key
+  ```
+- Or create a `.env` file and use `python-dotenv`.
 
-## 🤝 Contributing
+### b. Production Deployment
 
-1. Fork the repository
-2. Create feature branch
-3. Commit changes
-4. Push to branch
-5. Create Pull Request
+- Use a production server:
+  - Gunicorn (Linux):
+    ```bash
+    gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app
+    ```
+  - Uvicorn with multiple workers (Windows):
+    ```cmd
+    uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
+    ```
+- Set `debug=False` and configure logging as needed.
+
+### c. Database Migration & Backup
+
+- Use Alembic for schema migrations:
+  ```
+  alembic revision --autogenerate -m "Describe change"
+  alembic upgrade head
+  ```
+- Regularly backup your database (PostgreSQL, MySQL, etc.).
+
+### d. Security Best Practices
+
+- Change default admin credentials after first login.
+- Use HTTPS in production (with a reverse proxy like Nginx or Caddy).
+- Set strong `SECRET_KEY` and secure session/cookie settings.
+- Regularly update dependencies to patch vulnerabilities.
+
+### e. Customization
+
+- Add new business logic by creating new routers in `app/routers/` and templates in `app/templates/`.
+- Update models in `app/models.py` and run Alembic migrations for DB changes.
+- Use AJAX in templates for dynamic UI (see existing templates for examples).
+
+### f. Troubleshooting
+
+- Check logs in the terminal for errors.
+- Use `alembic current` and `alembic history` to debug DB migration issues.
+- For CORS/API issues, check FastAPI CORS middleware settings in `main.py`.
 
 ---
 
-**Phát triển bởi HDBank Tech Team** 🏦✨
+# Detailed Instructions for Each Step
+
+## 1. Clone the Repository
+
+- Replace `<your-repo-url>` with your actual repository URL from GitHub.
+- Example:
+  ```bash
+  git clone https://github.com/yourusername/banking_AI.git
+  cd banking_AI
+  ```
+
+## 2. Set Up Python Environment
+
+- Make sure Python 3.9 or higher is installed. Download from https://www.python.org/downloads/
+- To create a virtual environment:
+  ```bash
+  python -m venv venv
+  ```
+- To activate on Windows:
+  ```cmd
+  venv\Scripts\activate
+  ```
+- To activate on Linux/Mac:
+  ```bash
+  source venv/bin/activate
+  ```
+- You should see `(venv)` in your terminal prompt.
+
+## 3. Install Dependencies
+
+- Make sure your virtual environment is activated.
+- Install all required packages:
+  ```bash
+  pip install -r requirements.txt
+  ```
+- If you see errors, ensure you are using the correct Python version and that `pip` is available.
+
+## 4. Database Setup
+
+- By default, the project uses the database settings in `app/config.py`. Edit this file to match your local or production database.
+- Example for PostgreSQL:
+  ```python
+  SQLALCHEMY_DATABASE_URL = "postgresql://user:password@localhost:5432/banking_ai"
+  ```
+- To initialize the database schema, run:
+  ```bash
+  alembic upgrade head
+  ```
+- If you need to create a new migration after changing models:
+  ```bash
+  alembic revision --autogenerate -m "Describe your change"
+  alembic upgrade head
+  ```
+
+## 5. Run the Application
+
+- Start the FastAPI server in development mode:
+  ```bash
+  uvicorn app.main:app --reload
+  ```
+- The `--reload` flag auto-restarts the server on code changes (for development only).
+- Open http://127.0.0.1:8000 in your browser to check if the app is running.
+
+## 6. Access the Web UI
+
+- Go to http://127.0.0.1:8000 in your browser.
+- Register a new user or log in with existing credentials.
+- Explore the navigation bar for all features (accounts, transactions, products, etc.).
+
+## 7. API Documentation
+
+- FastAPI auto-generates API docs:
+  - Swagger UI: http://127.0.0.1:8000/docs
+  - Redoc: http://127.0.0.1:8000/redoc
+- You can test API endpoints directly from these pages.
+
+## 8. Running Tests
+
+- If the `tests/` folder contains test files, run:
+  ```bash
+  pytest
+  ```
+- Make sure the app and database are configured for testing (use a test DB if possible).
+
+## 9. Notes
+
+- If you change database settings, restart the app.
+- For production, do not use `--reload` and set up a proper server (see below).
+- Always keep your dependencies up to date:
+  ```bash
+  pip install --upgrade -r requirements.txt
+  ```
+
+## 10. Advanced Deployment & Customization
+
+### a. Environment Variables & Configuration
+
+- Store sensitive info (DB URL, secret keys) in environment variables or a `.env` file.
+- Example `.env` file:
+  ```env
+  DATABASE_URL=postgresql://user:password@localhost:5432/banking_ai
+  SECRET_KEY=your_secret_key
+  ```
+- Use the `python-dotenv` package to load `.env` automatically.
+- In `app/config.py`, load variables using `os.environ.get()`.
+
+### b. Production Deployment
+
+- Use a process manager and production server:
+  - Gunicorn (Linux):
+    ```bash
+    gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app
+    ```
+  - Uvicorn with workers (Windows):
+    ```cmd
+    uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
+    ```
+- Use Nginx or Caddy as a reverse proxy for HTTPS and static files.
+- Set `debug=False` in your config and configure logging.
+
+### c. Database Migration & Backup
+
+- Use Alembic for all schema changes:
+  ```bash
+  alembic revision --autogenerate -m "Describe change"
+  alembic upgrade head
+  ```
+- Backup your database regularly using your DBMS tools (e.g., `pg_dump` for PostgreSQL).
+
+### d. Security Best Practices
+
+- Change all default passwords after setup.
+- Use HTTPS in production (see Nginx/Caddy docs).
+- Set a strong `SECRET_KEY` in your environment.
+- Regularly update dependencies:
+  ```bash
+  pip install --upgrade -r requirements.txt
+  ```
+- Review FastAPI security docs: https://fastapi.tiangolo.com/advanced/security/
+
+### e. Customization
+
+- To add a new business feature:
+  1. Create a new model in `app/models.py`.
+  2. Add a schema in `app/schemas.py`.
+  3. Create a router in `app/routers/` and register it in `main.py`.
+  4. Add a template in `app/templates/` for the UI.
+  5. Run Alembic migrations if the DB schema changes.
+- For AJAX UI, see examples in existing templates (e.g., `accounts.html`).
+
+### f. Troubleshooting
+
+- If the app won't start, check the terminal for errors.
+- For DB errors, check your connection string and DB server status.
+- For migration issues:
+  ```bash
+  alembic current
+  alembic history
+  ```
+- For CORS/API issues, check FastAPI CORS middleware in `main.py`.
+- For more help, see FastAPI docs: https://fastapi.tiangolo.com/
+
+---
+
+**For any issues, please open an issue on the repository or contact the maintainer.**
